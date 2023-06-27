@@ -221,12 +221,16 @@ class CallNotificationActivity : CallBaseActivity() {
                                 binding!!.incomingCallVoiceOrVideoTextView.text = String.format(
                                     resources.getString(R.string.nc_call_video),
                                     resources.getString(R.string.nc_app_product_name)
-                                )
+                                );
+                                originalBundle!!.putBoolean(KEY_CALL_VOICE_ONLY, false)
+                                proceedToCall()
                             } else {
                                 binding!!.incomingCallVoiceOrVideoTextView.text = String.format(
                                     resources.getString(R.string.nc_call_voice),
                                     resources.getString(R.string.nc_app_product_name)
                                 )
+                                originalBundle!!.putBoolean(KEY_CALL_VOICE_ONLY, true)
+                                proceedToCall()
                             }
                         }
                     }
@@ -258,7 +262,7 @@ class CallNotificationActivity : CallBaseActivity() {
         notificationHandler.post(object : Runnable {
             override fun run() {
                 if (NotificationUtils.isNotificationVisible(context, notificationTimestamp!!.toInt())) {
-                    notificationHandler.postDelayed(this, ONE_SECOND)
+                    notificationHandler.postDelayed(this, 1000)
                 } else {
                     finish()
                 }
@@ -320,6 +324,5 @@ class CallNotificationActivity : CallBaseActivity() {
     companion object {
         const val TAG = "CallNotificationActivity"
         const val GET_ROOM_RETRY_COUNT: Long = 3
-        const val ONE_SECOND: Long = 1000
     }
 }
